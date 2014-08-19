@@ -1,0 +1,11 @@
+V 1.0
+	INITIAL VERSION
+	
+	
+Nexts version:
+	- Auto save in database
+	- Autoload fields from database
+	- SelfReset button - when is clicked, all input get the default value, 
+		if JavaScript is enabed, get the "default" from user configuration
+		and not from value=""
+	- Support to [] (maybe semmi-automatically trhough functions)

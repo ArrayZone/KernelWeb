@@ -1,0 +1,3 @@
+NEXTS VERSIONS:
+	- "cache" will be a main loader so this will be renamed to "fcache" (file cache)  
+	- This loader will support memcached and other cache systems

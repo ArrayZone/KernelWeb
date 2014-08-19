@@ -1,0 +1,38 @@
+DATE: Day/Month/Year
+
+==============
+HELP:
+==============
++ = ADDED
+- = DELETED
+! = FIXED / CHANGED
+~ = In development
+@ = TO DO
+
+
+==============
+NEXT VERSIONS:
+==============
+	Notice: session_start(): ps_files_cleanup_dir: opendir(/var/lib/php5) failed: Permission denied (13) in /path/to/kernelweb/main.php on line 14
+
+###########################################################################
+A.0.3 (in process):
+	+ Added memory used by application (and not only the peak) - 21/06/2014
+	+ Translated FormGenerator - 21/06/2014
+	
+	EXTENSIONS:
+		Stringer (v1.1) (04/07/2014):
+			+ Added "default value"
+			! Now $end is required
+
+###########################################################################
+A.0.2 - 05/06/2014:
+	! Buf fixed IExplorer plugin and translated
+	! Fixed detect language via GET if have more settings (htaccess fix)
+	+ Added translations for plugins
+	+ Added "catalan" as secondary language
+	+ Main translation to plugin FormGenerator
+	
+###########################################################################
+A.0.1 - 04/06/2014:
+	+ Initial Release (not public version)

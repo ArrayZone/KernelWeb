@@ -1,0 +1,45 @@
+Este script ha sido creado por RikuAnsem y Ayla de http://arrayzone.com
+
+Dudas, mejoras de codigo, mejoras de comentarios... CUALQUIER COSA a:
+powergm@hotmail.es
+
+
+Este script esta bajo licencia AZPL.
+Cualquiera puede usarlo en qualquier web, pero NO se puede cobrar por este Script.
+Tampoco se puede usar sin dar el nombre de los Autores y/o poner un enlace a:
+http://powerofdark.es/portal/scripts/paginador-web-mysql
+
+
+===> Changelog (Log de cambios) <===:
+V 1.1:
+    - Script fully rewrited
+    - Script is fexible for ANY type of pagination (mysql, txt files...)
+        - Total registers are specified MANUALLY now
+    
+V 1.0.1
+    NOTA: Para usar esta actualizacion debes modificar todas las variables
+  => Script Convertido en Class (mas facil)
+   
+
+
+V 1.0 REV 05.01.2012:
+ => Modificacion de configuracion:
+  - Ahora MAXPAGMOSTRAR es PAGMOSTRAR
+    Ademas, debes poner la MITAD de paginas que se mostraran
+  - Opcion para que no se muestren las paginaciones (que no las cargue para evitar carga) si solo hay una p?gina (o no hay)
+  - ReutilizarGet se puede usar "null" para no reutilizar ninguno
+  - Preparado para ModRewrite/javascript/Ajax... (hay que hecharle imaginacion, por supuesto :) )
+
+ => Modificaciones del Script
+  - Corregido el Bug al paginar sin poner nombre a la ultima pagina (ya no carga la ultima por defecto)
+  - Se pueden mostrar todas las paginas en lugar de solo cierta cantidad
+  - La cantidad de paginas que se van a mostrar tiene que ser LA MITAD del TOTAL
+  - Bugs Menores (y no tan menores)
+  - Modificaciones menores del codigo
+  - Fixeado el "reutilizarget" (siempre cogia el GET completo)
+  - Mejores comprovaciones al comprovar que sean o no numeros (reemplazo del is_numeric en varios sitios)
+    Se intenta evitar injecciones a la web
+
+
+V0.9 Rev 14.08.2011 (Primera Release):
+  - Puedes hacer multiples paginaciones

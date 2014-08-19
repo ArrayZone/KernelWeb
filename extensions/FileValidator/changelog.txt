@@ -1,0 +1,4 @@
+NEXTS VERSIONS:
+	- New system to check mimes?
+	- Add new types of supported format
+	- More flexibility to edit mimes and supported extensions

@@ -1,0 +1,119 @@
+RewriteEngine On
+
+# Disable Directory Listings in this Directory and Subdirectories
+# This will hide the files from the public unless they know direct URLs
+Options -Indexes
+
+# If mod_rewrite don't work correctly, uncomment next line:
+#Options +FollowSymlinks
+
+#Force HTTPS
+#RewriteCond %{HTTPS} !on
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+# Hotlink redirection
+#RewriteCond %{HTTP_REFERER} !^http://(.+\.)?mysite\.com/ [NC]
+#RewriteCond %{HTTP_REFERER} !^$
+#RewriteRule .*\.(jpe?g|gif|bmp|png)$ http://i.imgur.com/qX4w7.gif [L]
+
+# Compression
+<IfModule mod_deflate.c>
+    #The following line is enough for .js and .css
+    AddOutputFilter DEFLATE js css
+    AddOutputFilterByType DEFLATE text/plain text/xml application/xhtml+xml text/css   application/xml application/rss+xml application/atom_xml application/x-javascript application/x-httpd-php application/x-httpd-fastphp text/html
+
+    #The following lines are to avoid bugs with some browsers
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+# CACHE
+# BEGIN EXPIRES
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 10 days"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType text/plain "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-icon "access plus 1 year"
+</IfModule>
+# END EXPIRES
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|xml|gz)$">
+        Header append Vary Accept-Encoding
+    </FilesMatch>
+    <FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
+        Header set Cache-Control "public"
+    </FilesMatch>
+    <FilesMatch "\.(css)$">
+        Header set Cache-Control "public"
+    </FilesMatch>
+    <FilesMatch "\.(js)$">
+        Header set Cache-Control "private"
+    </FilesMatch>
+    <FilesMatch "\.(x?html?|php)$">
+        Header set Cache-Control "private, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+
+###################################################
+# DENY HOTLINK AND REDIRECT PETITION TO DIRECTORY PUBLIC DIRECTLY
+###################################################
+RewriteCond %{HTTP_REFERER} !^$
+# RewriteCond %{REQUEST_URI} !^/(wp-login.php|wp-admin/|wp-content/plugins/|wp-includes/).* [NC]
+RewriteCond %{REQUEST_URI} !^/(public).* [NC]
+RewriteCond %{HTTP_REFERER} !^http://localhost.com.*$ [NC]
+RewriteRule \.(ico|pdf|flv|jpg|jpeg|mp3|mpg|mp4|mov|wav|wmv|png|gif|swf|css|js)$ - 
+
+
+<FilesMatch ".(js|htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
+ Order Allow,Deny
+ Allow from all
+ RewriteRule ^.*$ - [NC,L]
+</FilesMatch>
+
+
+# The following rule tells Apache that if the requested filename
+# exists, simply serve it.
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+
+# Intentamos cazar la URL generica (Modulo / Controlador / Accion)
+# En funcion a los parametros:
+# 1: Controlador
+# 2: Controlador/Accion
+# 3: Modulo/Controlador/Accion
+# Con lo que conseguimos que, si solo se especifican 2 acciones, cargue el Modulo por defecto
+# Ademas, al final ponemos el GET solicitado
+# MAS INFO: http://www.addedbytes.com/articles/for-beginners/url-rewriting-for-beginners/
+RewriteRule ^([a-zA-Z_\-]+)?/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/?$ index.php?l=1&m=$2&c=$3&a=$4&%{QUERY_STRING} [L,NC]
+RewriteRule ^([a-zA-Z_\-]+)?/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/?$ index.php?l=1&c=$2&a=$3&%{QUERY_STRING} [L,NC]
+RewriteRule ^([a-zA-Z_\-]+)?/([a-zA-Z0-9_\-]+) index.php?l=1&c=$2&%{QUERY_STRING} [L,NC]
+RewriteRule ^([a-zA-Z_\-]+)? index.php?l=$1&%{QUERY_STRING} [L,NC]
+
+
+
+
+# The following rewrites all other queries to index.php. The 
+# condition ensures that if you are using Apache aliases to do
+# mass virtual hosting, the base path will be prepended to 
+# allow proper resolution of the index.php file; it will work
+# in non-aliased environments as well, providing a safe, one-size 
+# fits all solution.
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+
+
+
+ErrorDocument 404 errors/404.html 
